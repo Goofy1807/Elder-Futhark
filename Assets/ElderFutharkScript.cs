@@ -27,6 +27,7 @@ public class ElderFutharkScript : MonoBehaviour
     public GameObject[] RuneLetters_6;
     public Material[] Materials;
     public AudioClip[] Sounds;
+    public GameObject activatorModel;
 
     public GameObject[] DustSystemLetters;
     public GameObject[] DustSystemRunes;
@@ -87,20 +88,18 @@ public class ElderFutharkScript : MonoBehaviour
         };
     }
 
+    private void Awake()
+    {
+        // Show the runes the first time the module is selected or hovered over
+        Activator.OnInteract += delegate { dropRunes(); return false; };
+        Activator.OnHighlight += delegate { dropRunes(); }; 
+    }
+
     void Start()
     {
         moduleId = moduleIdCounter++;
 
-        // Show the runes the first time the module is selected
-        Activator.OnInteract += delegate
-        {
-            StartCoroutine(CrashDownSetup());
-            moduleStarted = true;
-            Activator.gameObject.SetActive(false);
-           Module.Children = Runes;
-           UpdateChildren();
-            return true;
-        };
+        
 
         // Set the runes to invisible until they appear
         for (int i = 0; i < Runes.Length; i++)
@@ -179,6 +178,19 @@ public class ElderFutharkScript : MonoBehaviour
         }
     }
 
+    private void dropRunes()
+    {
+        Destroy(activatorModel);
+        StartCoroutine(CrashDownSetup());
+        moduleStarted = true;
+        Activator.gameObject.SetActive(false);
+        Module.Children = Runes;
+
+        //If you want to support Gamepads, uncomment the line below.
+        //UpdateChildren();
+    }
+
+
     //Placing the word on the module
     private IEnumerator SetWord()
     {
@@ -224,6 +236,7 @@ public class ElderFutharkScript : MonoBehaviour
     //Let the pebbles fly down on the board
     private IEnumerator CrashDown(int pos)
     {
+        Destroy(activatorModel);
         while (RuneTransforms[pos].localPosition.y > 0.013f)
         {
             Vector3 newPos = RuneTransforms[pos].localPosition;

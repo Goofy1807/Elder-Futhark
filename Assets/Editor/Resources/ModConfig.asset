@@ -15,5 +15,6 @@ MonoBehaviour:
   title: Elder Futhark
   description: The goal is to press the correct runestones in the correct sequence
   version: 1.0
-  outputFolder: build
+  outputFolder: D:\Program Files (x86)\Steam\steamapps\common\Keep Talking and Nobody
+    Explodes\Mods
   previewImage: {fileID: 2800000, guid: 1a3938a0c8fbf7242a959a77c81e56c8, type: 3}
